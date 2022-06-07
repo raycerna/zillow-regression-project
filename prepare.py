@@ -2,6 +2,7 @@ import math
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 from sklearn import metrics
 import acquire
 
@@ -36,17 +37,21 @@ def optimize_types(df):
     df["fips"] = df["fips"].astype(int)
     df["assessed_value"] = df["assessed_value"].astype(int)
     df["tax_value"] = df["tax_value"].astype(int)
-    df['transaction_month'] = df.transaction_month.astype('int')
     return df
 
 def handle_outliers(df):
     """Manually handle outliers that only include the following"""
     df = df[df.bathrooms <= 6]
     df = df[df.bedrooms <= 6]
-    df = df[df.square_feet >= 3000]
+    df = df[df.square_feet <= 3000]
     return df
 
-def prep_zillow(df);
+def add_months(df):
+    df['transaction_date'] = df.transaction_date.astype('str')
+    df['transaction_month'] = df.transaction_date.str.split('-',expand=True)[1]
+    return df     
+
+def prep_zillow(df):
     """
     Acquires Zillow data
     Handles nulls
@@ -54,13 +59,15 @@ def prep_zillow(df);
     handles outliers w/ manual logic
     returns a clean dataframe
     """
-    df = get_zillow_data()
+    df = acquire.get_zillow_data()
 
-    df = handle_nulls(df)
+    df = handle_na(df)
 
     df = optimize_types(df)
 
     df = handle_outliers(df)
+
+    df = add_months(df)
 
     df.to_csv("zillow.csv", index=False)
 
