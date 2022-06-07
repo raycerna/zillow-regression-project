@@ -52,7 +52,7 @@ def get_zillow_data():
                         FROM properties_2017
                         JOIN predictions_2017 USING (id)
                         WHERE propertylandusetypeid = 261 AND bedroomcnt > 0 AND bathroomcnt > 0
-                        AND transactiondate >= '2017-01-01' AND transactiondate <= '2017-12-32'
+                        AND transactiondate >= '2017-01-01' AND transactiondate <= '2017-12-31'
                         '''
 
         # Connecting to the data base and using the query above to select the data
