@@ -48,7 +48,7 @@ def get_zillow_data():
         sql = '''
                         SELECT bedroomcnt AS bedrooms, bathroomcnt AS bathrooms, `calculatedfinishedsquarefeet` AS square_feet,  
                         `lotsizesquarefeet` AS lot_size, poolcnt AS pool, `regionidzip` AS zip_code, yearbuilt AS year_built, latitude, 
-                        longitude, fips, `taxvaluedollarcnt` AS assessed_value, `taxamount` AS tax_value, transactiondate AS transaction_date, logerror as log_error
+                        longitude, fips, `taxvaluedollarcnt` AS tax_value, `taxamount` AS tax_amount, transactiondate AS transaction_date, logerror as log_error
                         FROM properties_2017
                         JOIN predictions_2017 USING (id)
                         WHERE propertylandusetypeid = 261 AND bedroomcnt > 0 AND bathroomcnt > 0
