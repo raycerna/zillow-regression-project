@@ -51,6 +51,15 @@ def add_months(df):
     df['transaction_month'] = df.transaction_date.str.split('-',expand=True)[1]
     return df     
 
+def add_county(df):
+    df['county'] = np.where(df.fips == 6037, 'Los Angeles', np.where(df.fips == 6059, 'Orange','Ventura') )
+    #df = df.drop(columns = ‘fips’)
+    
+    #fips = pd.DataFrame({
+    #'fips': [6037, 6059, 6111],
+    #'County':['Los Angles', 'Orange', 'Ventura']})
+    return df
+
 def prep_zillow(df):
     """
     Acquires Zillow data
@@ -69,6 +78,8 @@ def prep_zillow(df):
 
     df = add_months(df)
 
-    df.to_csv("zillow.csv", index=False)
+    df = add_county(df)
+
+    #df.to_csv("zillow.csv", index=False)
 
     return df
