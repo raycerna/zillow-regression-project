@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import sklearn.preprocessing
 from sklearn import metrics
 import acquire
 
@@ -93,8 +94,7 @@ def prep_zillow(df):
 
 def scale_data(train, validate, test):
 
-    columns_to_scale = ['tax_value','assessed_value','bathrooms','bedrooms','bed_plus_bath',
-                        'room_count','square_feet','lot_size']
+    columns_to_scale = ['tax_value','assessed_value','bathrooms','bedrooms','square_feet','lot_size']
     
     # 1. Create the Scaling Object
     scaler = sklearn.preprocessing.StandardScaler()
