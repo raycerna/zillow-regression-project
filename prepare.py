@@ -24,7 +24,7 @@ def split_zillow_data(df):
 
 def handle_na(df):    
     # filling n/a's with zero on columns with n/a's
-    df = df.dropna(subset=['square_feet', 'lot_size', 'pool', 'zip_code', 'year_built', 'assessed_value', 'tax_value'])
+    df = df.dropna(subset=['square_feet', 'lot_size', 'pool', 'zip_code', 'year_built', 'tax_value', 'tax_amount'])
     df = df.fillna(0)
     return df
 
@@ -36,8 +36,8 @@ def optimize_types(df):
     df["zip_code"] = df["zip_code"].astype(int)
     df["year_built"] = df["year_built"].astype(int)
     df["fips"] = df["fips"].astype(int)
-    df["assessed_value"] = df["assessed_value"].astype(int)
     df["tax_value"] = df["tax_value"].astype(int)
+    df["tax_amount"] = df["tax_amount"].astype(int)
     return df
 
 def handle_outliers(df):
@@ -45,7 +45,7 @@ def handle_outliers(df):
     df = df[df.bathrooms <= 6]
     df = df[df.bedrooms <= 6]
     df = df[df.square_feet <= 3000]
-    df = df[df.assessed_value <= 1000000]
+    df = df[df.tax_value <= 1000000]
     return df
 
 def add_months(df):
@@ -63,7 +63,7 @@ def add_county(df):
     return df
 
 def add_tax_rate(df):
-     df['tax_rate'] = (df.tax_value/df.assessed_value) * 100
+     df['tax_rate'] = (df.tax_amount/df.tax_value) * 100
      return df
 
 def prep_zillow(df):
@@ -94,7 +94,7 @@ def prep_zillow(df):
 
 def scale_data(train, validate, test):
 
-    columns_to_scale = ['tax_value','assessed_value','bathrooms','bedrooms','square_feet','lot_size']
+    columns_to_scale = ['tax_amount','tax_value','bathrooms','bedrooms','square_feet','lot_size']
     
     # 1. Create the Scaling Object
     scaler = sklearn.preprocessing.StandardScaler()
@@ -124,3 +124,42 @@ def scale_data(train, validate, test):
     test_scaled.columns = test[columns_to_scale].columns
 
     return train_scaled, validate_scaled, test_scaled
+
+def percentage_stacked_plot(columns_to_plot, title, df):
+    
+    '''
+    Returns a 100% stacked plot of the response variable for independent variable of the list columns_to_plot.
+    Parameters: columns_to_plot (list of string): Names of the variables to plot
+    '''
+    
+    number_of_columns = 2
+    number_of_rows = math.ceil(len(columns_to_plot)/2)
+
+    # create a figure
+    fig = plt.figure(figsize=(12, 5 * number_of_rows)) 
+    fig.suptitle(title, fontsize=22,  y=.95)
+ 
+
+    # loop to each column name to create a subplot
+    for index, column in enumerate(columns_to_plot, 1):
+
+        # create the subplot
+        ax = fig.add_subplot(number_of_rows, number_of_columns, index)
+
+        # calculate the percentage of observations of the response variable for each group of the independent variable
+        # 100% stacked bar plot
+        prop_by_independent = pd.crosstab(df[column], df['tax_value']).apply(lambda x: x/x.sum()*100, axis=1)
+
+        prop_by_independent.plot(kind='bar', ax=ax, stacked=True,
+                                 rot=0, color=['#94bad4','#ebb086'])
+
+        # set the legend in the upper right corner
+        ax.legend(loc="upper right", bbox_to_anchor=(0.62, 0.5, 0.5, 0.5),
+                  title='Tax Value', fancybox=True)
+
+        # eliminate the frame from the plot
+        spine_names = ('top', 'right', 'bottom', 'left')
+        for spine_name in spine_names:
+            ax.spines[spine_name].set_visible(False)
+
+    return percentage_stacked_plot
