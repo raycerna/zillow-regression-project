@@ -38,6 +38,7 @@ def optimize_types(df):
     df["fips"] = df["fips"].astype(int)
     df["tax_value"] = df["tax_value"].astype(int)
     df["tax_amount"] = df["tax_amount"].astype(int)
+    df["transaction_month"] = df["transaction_month"].astype(int)
     return df
 
 def handle_outliers(df):
@@ -78,11 +79,11 @@ def prep_zillow(df):
 
     df = handle_na(df)
 
+    df = add_months(df)
+
     df = optimize_types(df)
 
     df = handle_outliers(df)
-
-    df = add_months(df)
 
     df = add_county(df)
 
