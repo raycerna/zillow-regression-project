@@ -1,16 +1,16 @@
 # Predicting propery tax assessed values of Single Family Properties
 
-- project description with goals
+## project description with goals
 
     The goal of this project is to find the key drivers of property tax value for single family properties that had a transaction in 2017. The scenario is that a Zillow Data Science Team has a model ready, but they are looking for insights that can help improve it. This project will give recommendations on a way to make a better model. It will also give me an opportunity to practice the data science pipeline to include Acquire, Prepare, Exploring, and Modeling.
 
 
-- initial hypotheses:
+## initial hypotheses:
 
 #### 𝐻0 there is no relationship between tax values and number of bedrooms, bathrooms and square_feet
 #### 𝐻𝑎: There is a relationship between tax values and number of bedrooms, bathrooms and square_feet
 
-- data dictionary (only features used in exploration):
+## data dictionary (only features used in exploration):
 
 | Feature                       | Definition                               
 |-------------------------------|------------------------------------------------------------|
@@ -29,8 +29,8 @@
 |'taxamount'                    |The total property tax assessed for that assessment year    |
 
 
-- project planning:
-    - Acquire
+## project planning:
+- Acquire
     - Acquired data using SQL from the zillow database.
         - Note: Functions to acquire data are built into the acquire.py file.
         - Loaded and inspected dataset.
@@ -54,28 +54,21 @@
 
 - Model
     - Train, validated, and tested the predictors/independent features.
-    - Determined my baseline prediciton at 73%.
-    - Trained on three different classification models.
+    - Determined my baseline prediciton.
+    - Trained on classification models:
         - Logistic Regression
-        - Random Forest
-        - K-Nearest Neighbors
-    - Validated on two since they were nearly identical.
-        - KNN and Random Forest
-    - Chose Random Forest for Test model after highest accuracy on validate.
 
 ## instructions on how to reproduce this project and findings
 
-- Copy the acquire.py, prepare.py, and telco_analysis.ipynb
-- Run telco_analysis.ipynb then further explore or reprepare data to your liking.
+- Download acquire.py module and use it to acquire the data. Requires credentials to access the zillow database.
+- Download prepare.py module and use its functions to prepare the data.
+- Explore on your own.
 
 ## key findings, recommendations, and takeaways from project
 
-- It is evident that contract type is the highest indicator for customers to churn. My suggestion would be to offer a discount for subscribing to a one-year thus showing the customer they would save money in the long run.
-- There is currently no option to bundle packages for internet service to include online_security, device_protection, and tech_support. It was evident that if a customer did not have one of these they were more likely to churn. My suggestion would be to bundle all these together at a discounted rate.
-- Our best performing model obtained an accuracy of 76% ~3% higher than baseline.
-
-*** NOTE: With more time we can determine the amount of revenue we can increase with my recommendations.
-
-instructions or an explanation of how someone else can reproduce your project and findings (What would someone need to be able to recreate your project on their own?)
-
-key findings, recommendations, and takeaways from your project.
+- Drivers of the property value are:
+    - Square_feet of home
+    - Number of bathhrooms
+    - Number of bedrooms
+    - County the property is located
+        - The average property value in LA County is significantly lower than Orange and Ventura County
