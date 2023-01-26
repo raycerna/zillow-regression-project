@@ -1,4 +1,4 @@
-# Predicting propery tax assessed values of Single Family Properties
+# Predicting property tax assessed values of Single Family Properties
 
 ## project description with goals
 
